@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,26 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Admin-only capabilities
+        Gate::define('manage-users', function (User $user) {
+            return $user->isAdmin();
+        });
+
+        Gate::define('manage-master-data', function (User $user) {
+            return $user->isAdmin();
+        });
+
+        Gate::define('cancel-transaction', function (User $user) {
+            return $user->isAdmin();
+        });
+
+        // Staff and Admin capabilities
+        Gate::define('manage-sales', function (User $user) {
+            return in_array($user->role, ['admin', 'staff']);
+        });
+
+        Gate::define('manage-purchases', function (User $user) {
+            return in_array($user->role, ['admin', 'staff']);
+        });
     }
 }

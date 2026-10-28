@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Purchase extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'supplier_id',
+        'user_id',
+        'purchase_number',
+        'total',
+        'status',
+        'purchased_at',
+        'notes',
+    ];
+
+    protected $casts = [
+        'purchased_at' => 'datetime',
+        'total' => 'decimal:2',
+    ];
+
+    /**
+     * Purchase belongsTo Supplier
+     */
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    /**
+     * Purchase belongsTo User (staff/admin who recorded)
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Purchase hasMany PurchaseItems
+     */
+    public function items()
+    {
+        return $this->hasMany(PurchaseItem::class);
+    }
+
+    // Alias for compatibility
+    public function purchaseItems()
+    {
+        return $this->hasMany(PurchaseItem::class);
+    }
+}
