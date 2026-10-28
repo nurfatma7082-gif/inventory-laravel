@@ -22,6 +22,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Redirect /home ke dashboard (default Laravel redirect setelah login)
+Route::get('/home', function () {
+    return redirect()->route('dashboard');
+});
+
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
