@@ -17,10 +17,10 @@ use App\Http\Controllers\UserController;
 |--------------------------------------------------------------------------
 */
 
-// Redirect root to dashboard (if authenticated) or login
+// Halaman Utama (Landing Page Luas & Informatif)
 Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+    return view('welcome');
+})->name('home');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
